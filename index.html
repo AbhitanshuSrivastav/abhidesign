@@ -147,77 +147,6 @@
       font-size: 1.05rem;
     }
 
-    .startup-screen {
-      position: fixed;
-      inset: 0;
-      z-index: 2000;
-      display: grid;
-      place-items: center;
-      background: var(--bg);
-      transition: opacity 650ms ease, visibility 650ms ease;
-    }
-
-    .startup-screen::before {
-      content: "";
-      position: absolute;
-      width: 260px;
-      height: 260px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      filter: blur(80px);
-      opacity: .32;
-      animation: startupGlow 2s ease-in-out infinite alternate;
-    }
-
-    .startup-screen.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-    .startup-logo {
-      position: relative;
-      width: clamp(110px, 22vw, 170px);
-      aspect-ratio: 1;
-      padding: 8px;
-      border: 2px solid transparent;
-      border-radius: 28px;
-      background: linear-gradient(var(--bg), var(--bg)) padding-box,
-        conic-gradient(from 0deg, var(--primary), var(--secondary), var(--primary-light), var(--primary)) border-box;
-      box-shadow: 0 0 28px rgba(124,92,255,.45), 0 0 70px rgba(34,211,238,.18);
-      animation: startupLogo 1.8s cubic-bezier(.2,.8,.2,1) both;
-    }
-
-    .startup-logo::before {
-      content: "";
-      position: absolute;
-      inset: -10px;
-      border: 2px solid transparent;
-      border-radius: 34px;
-      background: linear-gradient(transparent, transparent) padding-box,
-        conic-gradient(var(--secondary), transparent, var(--primary), transparent, var(--secondary)) border-box;
-      animation: logoOrbit 3s linear infinite;
-      pointer-events: none;
-    }
-
-    .startup-logo img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      border-radius: 20px;
-      background: white;
-    }
-
-    @keyframes startupLogo {
-      from { opacity: 0; transform: scale(.65) rotate(-12deg); filter: blur(8px); }
-      to { opacity: 1; transform: scale(1) rotate(0); filter: blur(0); }
-    }
-
-    @keyframes startupGlow {
-      from { transform: scale(.8); opacity: .22; }
-      to { transform: scale(1.25); opacity: .42; }
-    }
-
     .header {
       position: fixed;
       inset: 0 0 auto;
@@ -2052,112 +1981,123 @@
     }
 
     /* Compact mobile spacing for a cleaner UI on small screens. */
-    @media (max-width:650px) {
+        @media (max-width:650px) {
       .section {
         padding: 52px 0;
       }
-
       .section-header {
         margin-bottom: 26px;
       }
-
       .section-label {
         margin-bottom: 8px;
       }
-
       .section-title {
         margin-bottom: 12px;
       }
-
       .section-description {
         font-size: .95rem;
       }
-
       .logos {
         padding: 24px 0 42px;
       }
-
       .logos-title {
         margin-bottom: 16px;
       }
-
       .dashboard-wrapper {
         margin-top: 34px;
       }
-
       .feature-card,
       .price-card {
         padding: 20px;
       }
-
       .feature-icon {
         width: 42px;
         height: 42px;
         margin-bottom: 14px;
       }
-
       .stats-container {
         margin-top: 0;
       }
-
       .big-stat {
         padding: 24px 12px;
       }
-
       .testimonial {
         padding: 26px 18px;
       }
-
       .quote {
         margin-bottom: 20px;
       }
-
       .faq-grid {
         gap: 8px;
       }
-
       .payment-box {
         margin-bottom: 24px;
         padding: 18px;
       }
-
       .project-form {
         margin-bottom: 38px;
       }
-
       .cta {
         padding: 44px 0;
       }
-
       .cta-box {
         padding: 38px 18px;
       }
-
       footer {
         padding-top: 34px;
       }
-
       .copyright {
         margin-top: 30px;
       }
+    }
+
+    /* Keep the page still: no zoom, slide, float, or smooth-scroll effects. */
+    html {
+      scroll-behavior: auto;
+    }
+
+    .animated-heading-text,
+    .logo-mark-wrap,
+    .logo-mark,
+    .footer-wordmark,
+    .footer-wordmark::before,
+    .footer-wordmark::after,
+    .testimonial-slide,
+    .reveal {
+      animation: none !important;
+    }
+
+    .animated-heading-text {
+      opacity: 1;
+      filter: none;
+    }
+
+    .dashboard {
+      transform: none;
+    }
+
+    .reveal,
+    .reveal.visible,
+    .btn:hover,
+    .feature-card:hover,
+    .price-card:hover,
+    .price-card.selected,
+    .payment-method:hover,
+    .payment-method.selected,
+    .logo:hover .logo-mark,
+    .logo:hover .footer-wordmark {
+      opacity: 1;
+      transform: none;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="startup-screen" id="startupScreen" aria-label="Loading ABHI website">
-    <img
-      class="startup-logo"
-      src=""
-      alt="ABHI logo"
-    >
-  </div>
-
   <header class="header" id="header">
     <div class="container nav">
 
-      <a href="" class="logo" aria-label="ABHI home">
+      <a href="#home" class="logo" aria-label="ABHI home">
         <span class="footer-wordmark">ABHI</span>
       </a>
 
@@ -2708,7 +2648,6 @@
   </footer>
 
   <script>
-    const startupScreen = document.getElementById("startupScreen");
     const menuToggle = document.getElementById("menuToggle");
     const navLinks = document.getElementById("navLinks");
     const header = document.getElementById("header");
@@ -2717,10 +2656,6 @@
 
     // Google Apps Script web-app URL used to store project form submissions in Sheets.
     const googleSheetWebhook = "https://script.google.com/macros/s/AKfycbwJK4LFSnrULEbR0VamCsgzSg-wi3Lzb_12sX-o3xqirhhsMJ81Iy6kDiE8OY53-ci-qA/exec";
-
-    window.addEventListener("load", () => {
-      setTimeout(() => startupScreen.classList.add("hidden"), 500);
-    });
 
     projectForm.addEventListener("submit", async event => {
       event.preventDefault();
@@ -2793,10 +2728,6 @@
     testimonialDots.forEach((dot, index) => {
       dot.addEventListener("click", () => showTestimonial(index));
     });
-
-    setInterval(() => {
-      showTestimonial((testimonialIndex + 1) % testimonialSlides.length);
-    }, 5000);
 
     function updateHeader() {
       header.classList.toggle("scrolled", window.scrollY > 30);
